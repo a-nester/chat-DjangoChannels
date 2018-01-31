@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %} Django Chat in real time with Channels. {% endblock %}</title>
+    <link href="{% static 'my/css/styles.css' %}" rel="stylesheet" type="text/css">
+</head>
+<body>
+        <header>
+            <div id="wHeader">
+                <div id="leftHeader">Communion</div>
+                <div id="rightHeader">{% if user.is_authenticated %}<span>Hey, <strong id="nameUser">{{ user.username }}</strong>!</span> <a href="{% url 'users:log_out' %}">Log Out?</a> {% else %} <a href="{% url 'users:log_in' %}">LogIn</a>{% endif %}</div>
+            </div>
+        </header>
+    <section id="Communion">
+        <div id="wSection">
+        {% block content %}
+            <ul id="left">
+                {% if user.is_authenticated %}
+                {% for room in rooms %}
+                    <li @click="inRoom('{{ room.pk }}')"><span>{{ room.title }} </span></li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+
+            <div v-if="isCommunication" id="right">
+                <div id="messages"></div>
+                    <div id="info"></div>
+                <form>
+                    <textarea @change="inputText" @input="inputText" placeholder="Your message..."  id="m_send" ></textarea>
+                    <button @click="toSend('m_send')" type="button"></button>
+                </form>
+            </div>
+            <div v-else id="right">
+                {% if user.is_authenticated %}
+                <h1>To start writing, you need to select a room on the left.</h1>
+                {% else %}
+                <h1>Please, Log In or Register.</h1>
+                {% endif %}
+            </div>
+            <div id="pk_user" style="display:none;">{{ user.pk }}</div>
+            {% endblock %}
+
+
+            <div id="footer">
+                powered by Artem Nester
+            </div>
+        </div>
+        </section>
+{% block script %}
+<script src="{% static 'my/js/vue.js' %}"></script>
+<script src="{% static 'my/js/main.js' %}"></script>
+{% endblock %}
+</body>
+</html>

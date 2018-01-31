@@ -1,0 +1,22 @@
+{% extends 'my/index.html' %}
+
+
+{% block title %} Страница пользователя {{ user.username }} {% endblock %}
+{% block header_text %}Пользователь: {{ user.username }}{% endblock %}
+{% block content %}
+    <a id="to_read" href="#">Написать</a>
+    <style>
+        #to_read {
+            float:left;
+            width:calc(30% - 10px);
+            margin-left:35%;
+            text-align:center;
+            margin-top:40px;
+            padding:15px 5px;
+            text-decoration-line: none;
+            border: 3px solid palevioletred;
+            color: black;
+            border-radius:15px;
+        }
+    </style>
+{% endblock %}
